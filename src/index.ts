@@ -1,7 +1,3 @@
-const formatComplet = (value: number, size: number): string => {
-  return value.toString().padStart(size, '0');
-};
-
 export enum MonthName {
   January = 'Enero',
   February = 'Febrero',
@@ -107,17 +103,45 @@ export const MONTH_DAYS = [
   MonthDay.December
 ];
 
-export const DAYS_NAME = [
-  'Domingo',
-  'Lunes',
-  'Martes',
-  'Miércoles',
-  'Jueves',
-  'Viernes',
-  'Sábado'
+export enum DayName {
+  Sunday = 'Domingo',
+  Monday = 'Lunes',
+  Tuesday = 'Martes',
+  Wednesday = 'Miércoles',
+  Thursday = 'Jueves',
+  Friday = 'Viernes',
+  Saturday = 'Sábado'
+}
+
+export enum DayLabel {
+  Sunday = 'Do',
+  Monday = 'Lu',
+  Tuesday = 'Ma',
+  Wednesday = 'Mi',
+  Thursday = 'Ju',
+  Friday = 'Vi',
+  Saturday = 'Sa'
+}
+
+export const DAY_NAMES = [
+  DayName.Sunday,
+  DayName.Monday,
+  DayName.Tuesday,
+  DayName.Wednesday,
+  DayName.Thursday,
+  DayName.Friday,
+  DayName.Saturday
 ];
 
-export const DAYS_NAME_MIN = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+export const DAY_LABELS = [
+  DayLabel.Sunday,
+  DayLabel.Monday,
+  DayLabel.Tuesday,
+  DayLabel.Wednesday,
+  DayLabel.Thursday,
+  DayLabel.Friday,
+  DayLabel.Saturday
+];
 
 export enum Miliseconds {
   Year = 31536000000,
@@ -131,14 +155,18 @@ export enum Miliseconds {
 
 type DateFormat = Record<string, (date: Date) => string>;
 
+const formatComplet = (value: number, size: number): string => {
+  return value.toString().padStart(size, '0');
+};
+
 const formatHour = (date: Date): number => {
   const hour = date.getHours();
 
   return hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
 };
 
-const verifyDayYear = (date: Date, year: number): void => {
-  const days = fetchMonthDays(year, date.getMonth());
+const verifyDayInYear = (date: Date, year: number): void => {
+  const days = daysFromMonth(year, date.getMonth());
 
   if (days < date.getDate()) {
     date.setDate(days);
@@ -147,8 +175,8 @@ const verifyDayYear = (date: Date, year: number): void => {
   date.setFullYear(year); // Establecer el año
 };
 
-const verifyDayMonth = (date: Date, month: number): void => {
-  const days = fetchMonthDays(date.getFullYear(), month);
+const verifyDayInMonth = (date: Date, month: number): void => {
+  const days = daysFromMonth(date.getFullYear(), month);
 
   if (days < date.getDate()) {
     date.setDate(days);
@@ -162,10 +190,10 @@ const FORMATTERS: DateFormat = {
     return formatComplet(date.getDate(), 2);
   },
   dw: (date: Date): string => {
-    return DAYS_NAME[date.getDay()];
+    return DAY_NAMES[date.getDay()];
   },
   dx: (date: Date): string => {
-    return DAYS_NAME_MIN[date.getDay()];
+    return DAY_LABELS[date.getDay()];
   },
   mm: (date: Date): string => {
     return formatComplet(date.getMonth() + 1, 2);
@@ -376,7 +404,7 @@ export const weight = (date: Date): number => {
   return date.getFullYear() * 365 + (date.getMonth() + 1) * 30 + date.getDate();
 };
 
-export const fetchMonthDays = (year: number, month: number): number => {
+export const daysFromMonth = (year: number, month: number): number => {
   return month === 1 && isLeapYear(year) ? 29 : MONTH_DAYS[month];
 };
 
@@ -396,19 +424,21 @@ export const formatDate = (date: Date, pattern: string): string => {
   return format;
 };
 
-export const createDate = (
-  year?: number,
-  month?: number,
-  day?: number
-): Date => {
+interface CreateDate {
+  day?: number;
+  month?: number;
+  year?: number;
+}
+
+export const createDate = ({ day, month, year }: CreateDate): Date => {
   const resultDate = new Date();
 
   if (year) {
-    verifyDayYear(resultDate, year);
+    verifyDayInYear(resultDate, year);
   }
 
   if (month) {
-    verifyDayMonth(resultDate, month);
+    verifyDayInMonth(resultDate, month);
   }
 
   if (day) {
@@ -421,7 +451,7 @@ export const createDate = (
 export const refactorYear = (date: Date, year: number): Date => {
   const resultDate = new Date(date.getTime());
 
-  verifyDayYear(resultDate, year);
+  verifyDayInYear(resultDate, year);
 
   resultDate.setFullYear(year);
 
@@ -431,7 +461,7 @@ export const refactorYear = (date: Date, year: number): Date => {
 export const refactorMonth = (date: Date, month: number): Date => {
   const resultDate = new Date(date.getTime());
 
-  verifyDayMonth(resultDate, month);
+  verifyDayInMonth(resultDate, month);
 
   resultDate.setMonth(month);
 
