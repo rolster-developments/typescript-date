@@ -1,31 +1,64 @@
-export enum MonthName {
-  January = 'Enero',
-  February = 'Febrero',
-  March = 'Marzo',
-  April = 'Abril',
-  May = 'Mayo',
-  June = 'Junio',
-  July = 'Julio',
-  August = 'Agosto',
-  September = 'Septiembre',
-  October = 'Octubre',
-  November = 'Noviembre',
-  December = 'Diciembre'
+import { i18nSubscribe } from '@rolster/i18n';
+import dateI18n from './i18n';
+
+let MONTH_NAMES_I18N: string[] = [];
+let MONTH_LABELS_I18N: string[] = [];
+let DAY_NAMES_I18N: string[] = [];
+let DAY_LABELS_I18N: string[] = [];
+
+function loadI18n(language = 'es'): void {
+  MONTH_NAMES_I18N = [
+    dateI18n('january', { language }),
+    dateI18n('february', { language }),
+    dateI18n('march', { language }),
+    dateI18n('april', { language }),
+    dateI18n('may', { language }),
+    dateI18n('june', { language }),
+    dateI18n('july', { language }),
+    dateI18n('august', { language }),
+    dateI18n('september', { language }),
+    dateI18n('october', { language }),
+    dateI18n('november', { language }),
+    dateI18n('december', { language })
+  ];
+
+  MONTH_LABELS_I18N = MONTH_NAMES_I18N.map((name) => name.substring(0, 3));
+
+  DAY_NAMES_I18N = [
+    dateI18n('sunday', { language }),
+    dateI18n('monday', { language }),
+    dateI18n('tuesday', { language }),
+    dateI18n('wednesday', { language }),
+    dateI18n('thursday', { language }),
+    dateI18n('friday', { language }),
+    dateI18n('saturday', { language })
+  ];
+
+  DAY_LABELS_I18N = DAY_NAMES_I18N.map((name) => name.substring(0, 3));
 }
 
-export enum MonthLabel {
-  January = 'Ene',
-  February = 'Feb',
-  March = 'Mar',
-  April = 'Abr',
-  May = 'May',
-  June = 'Jun',
-  July = 'Jul',
-  August = 'Ago',
-  September = 'Sep',
-  October = 'Oct',
-  November = 'Nov',
-  December = 'Dic'
+loadI18n();
+
+i18nSubscribe((language) => loadI18n(language));
+
+export enum Miliseconds {
+  Year = 31536000000,
+  Month = 2592000000,
+  Week = 604800000,
+  Day = 86400000,
+  Hour = 3600000,
+  Minute = 60000,
+  Second = 1000
+}
+
+export enum Day {
+  Sunday,
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday
 }
 
 export enum Month {
@@ -58,36 +91,6 @@ export enum MonthDay {
   December = 31
 }
 
-export const MONTH_NAMES = [
-  MonthName.January,
-  MonthName.February,
-  MonthName.March,
-  MonthName.April,
-  MonthName.May,
-  MonthName.June,
-  MonthName.July,
-  MonthName.August,
-  MonthName.September,
-  MonthName.October,
-  MonthName.November,
-  MonthName.December
-];
-
-export const MONTH_LABELS = [
-  MonthLabel.January,
-  MonthLabel.February,
-  MonthLabel.March,
-  MonthLabel.April,
-  MonthLabel.May,
-  MonthLabel.June,
-  MonthLabel.July,
-  MonthLabel.August,
-  MonthLabel.September,
-  MonthLabel.October,
-  MonthLabel.November,
-  MonthLabel.December
-];
-
 export const MONTH_DAYS = [
   MonthDay.January,
   MonthDay.February,
@@ -103,55 +106,21 @@ export const MONTH_DAYS = [
   MonthDay.December
 ];
 
-export enum DayName {
-  Sunday = 'Domingo',
-  Monday = 'Lunes',
-  Tuesday = 'Martes',
-  Wednesday = 'Miércoles',
-  Thursday = 'Jueves',
-  Friday = 'Viernes',
-  Saturday = 'Sábado'
-}
+export const MONTH_NAMES = (): string[] => {
+  return MONTH_NAMES_I18N;
+};
 
-export enum DayLabel {
-  Sunday = 'Do',
-  Monday = 'Lu',
-  Tuesday = 'Ma',
-  Wednesday = 'Mi',
-  Thursday = 'Ju',
-  Friday = 'Vi',
-  Saturday = 'Sa'
-}
+export const MONTH_LABELS = (): string[] => {
+  return MONTH_LABELS_I18N;
+};
 
-export const DAY_NAMES = [
-  DayName.Sunday,
-  DayName.Monday,
-  DayName.Tuesday,
-  DayName.Wednesday,
-  DayName.Thursday,
-  DayName.Friday,
-  DayName.Saturday
-];
+export const DAY_NAMES = (): string[] => {
+  return DAY_NAMES_I18N;
+};
 
-export const DAY_LABELS = [
-  DayLabel.Sunday,
-  DayLabel.Monday,
-  DayLabel.Tuesday,
-  DayLabel.Wednesday,
-  DayLabel.Thursday,
-  DayLabel.Friday,
-  DayLabel.Saturday
-];
-
-export enum Miliseconds {
-  Year = 31536000000,
-  Month = 2592000000,
-  Week = 604800000,
-  Day = 86400000,
-  Hour = 3600000,
-  Minute = 60000,
-  Second = 1000
-}
+export const DAY_LABELS = (): string[] => {
+  return DAY_LABELS_I18N;
+};
 
 type DateFormat = Record<string, (date: Date) => string>;
 
@@ -190,19 +159,19 @@ const FORMATTERS: DateFormat = {
     return formatComplet(date.getDate(), 2);
   },
   dw: (date: Date): string => {
-    return DAY_NAMES[date.getDay()];
+    return DAY_NAMES_I18N[date.getDay()];
   },
   dx: (date: Date): string => {
-    return DAY_LABELS[date.getDay()];
+    return DAY_LABELS_I18N[date.getDay()];
   },
   mm: (date: Date): string => {
     return formatComplet(date.getMonth() + 1, 2);
   },
   mn: (date: Date): string => {
-    return MONTH_NAMES[date.getDay()];
+    return MONTH_NAMES_I18N[date.getDay()];
   },
   mx: (date: Date): string => {
-    return MONTH_LABELS[date.getMonth()];
+    return MONTH_LABELS_I18N[date.getMonth()];
   },
   aa: (date: Date): string => {
     return formatComplet(date.getFullYear(), 4);
@@ -329,7 +298,7 @@ export const isEquals = (date: Date, compare = new Date()): boolean => {
   return date.getTime() === compare.getTime();
 };
 
-export const isSameWeight = (date: Date, compare = new Date()): boolean => {
+export const isWeight = (date: Date, compare = new Date()): boolean => {
   return weight(date) === weight(compare);
 };
 
@@ -379,25 +348,25 @@ export const differenceForHumans = (
 };
 
 export const normalizeMinTime = (date: Date): Date => {
-  const newDate = new Date(date.getTime());
+  const normalize = new Date(date.getTime());
 
-  newDate.setHours(0);
-  newDate.setMinutes(0);
-  newDate.setSeconds(0);
-  newDate.setMilliseconds(0);
+  normalize.setHours(0);
+  normalize.setMinutes(0);
+  normalize.setSeconds(0);
+  normalize.setMilliseconds(0);
 
-  return newDate;
+  return normalize;
 };
 
 export const normalizeMaxTime = (date: Date): Date => {
-  const newDate = new Date(date.getTime());
+  const normalize = new Date(date.getTime());
 
-  newDate.setHours(23);
-  newDate.setMinutes(59);
-  newDate.setSeconds(59);
-  newDate.setMilliseconds(0);
+  normalize.setHours(23);
+  normalize.setMinutes(59);
+  normalize.setSeconds(59);
+  normalize.setMilliseconds(0);
 
-  return newDate;
+  return normalize;
 };
 
 export const weight = (date: Date): number => {
@@ -412,16 +381,12 @@ export const isLeapYear = (year: number): boolean => {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 };
 
-export const formatDate = (date: Date, pattern: string): string => {
-  let format = pattern;
+const regInterpolation = /{([^{}]*)}/g;
 
-  Object.keys(FORMATTERS).forEach((key) => {
-    if (format.includes(key)) {
-      format = format.replace(key, FORMATTERS[key](date));
-    }
-  });
-
-  return format;
+export const formatDate = (date: Date, template: string): string => {
+  return template.replace(regInterpolation, (value, key) =>
+    FORMATTERS[key] ? FORMATTERS[key](date) : value
+  );
 };
 
 interface CreateDate {
@@ -431,47 +396,47 @@ interface CreateDate {
 }
 
 export const createDate = ({ day, month, year }: CreateDate): Date => {
-  const resultDate = new Date();
+  const result = new Date();
 
   if (year) {
-    verifyDayInYear(resultDate, year);
+    verifyDayInYear(result, year);
   }
 
   if (month) {
-    verifyDayInMonth(resultDate, month);
+    verifyDayInMonth(result, month);
   }
 
   if (day) {
-    resultDate.setDate(day);
+    result.setDate(day);
   }
 
-  return resultDate;
+  return result;
 };
 
 export const refactorYear = (date: Date, year: number): Date => {
-  const resultDate = new Date(date.getTime());
+  const refactor = new Date(date.getTime());
 
-  verifyDayInYear(resultDate, year);
+  verifyDayInYear(refactor, year);
 
-  resultDate.setFullYear(year);
+  refactor.setFullYear(year);
 
-  return resultDate;
+  return refactor;
 };
 
 export const refactorMonth = (date: Date, month: number): Date => {
-  const resultDate = new Date(date.getTime());
+  const refactor = new Date(date.getTime());
 
-  verifyDayInMonth(resultDate, month);
+  verifyDayInMonth(refactor, month);
 
-  resultDate.setMonth(month);
+  refactor.setMonth(month);
 
-  return resultDate;
+  return refactor;
 };
 
 export const refactorDay = (date: Date, day: number): Date => {
-  const resultDate = new Date(date.getTime());
+  const refactor = new Date(date.getTime());
 
-  resultDate.setDate(day);
+  refactor.setDate(day);
 
-  return resultDate;
+  return refactor;
 };
