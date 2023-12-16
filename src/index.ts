@@ -282,15 +282,15 @@ export const pendingTime = (
   };
 };
 
-export const refactorFromDays = (date: Date, days = 1): Date => {
-  return refactorFromTimestamp(date, days * Miliseconds.Day);
+export const increaseWithDays = (date: Date, days = 1): Date => {
+  return increaseWithTimestamp(date, days * Miliseconds.Day);
 };
 
-export const refactorFromMonth = (date: Date, months = 1): Date => {
-  return refactorFromTimestamp(date, months * Miliseconds.Month);
+export const increaseWithWeeks = (date: Date, week = 1): Date => {
+  return increaseWithTimestamp(date, week * Miliseconds.Week);
 };
 
-export const refactorFromTimestamp = (date: Date, timestamp: number): Date => {
+export const increaseWithTimestamp = (date: Date, timestamp: number): Date => {
   return new Date(date.getTime() + timestamp);
 };
 
