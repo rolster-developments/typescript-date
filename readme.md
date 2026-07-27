@@ -39,14 +39,14 @@ dateFormatTemplate(date, '{hh}:{ii}:{ss}'); // '15:30:45'
 dateFormatTemplate(date, '{hz}:{ii} {zz}'); // '03:30 PM'
 ```
 
-| Token  | Meaning                          | Token  | Meaning                       |
-| ------ | -------------------------------- | ------ | ----------------------------- |
-| `dd`   | day (2 digits)                   | `yy`   | year (4 digits)               |
-| `dw`   | day-of-week name                 | `yx`   | year (2 digits)               |
-| `mm`   | month number (2 digits)          | `hh`   | hour 24h (2 digits)           |
-| `mn`   | month name                       | `hz`   | hour 12h (2 digits)           |
-| `mx`   | month label (short)              | `ii`   | minutes (2 digits)            |
-| `ss`   | seconds (2 digits)               | `zz`   | meridiem (AM/PM)              |
+| Token | Meaning                 | Token | Meaning             |
+| ----- | ----------------------- | ----- | ------------------- |
+| `dd`  | day (2 digits)          | `yy`  | year (4 digits)     |
+| `dw`  | day-of-week name        | `yx`  | year (2 digits)     |
+| `mm`  | month number (2 digits) | `hh`  | hour 24h (2 digits) |
+| `mn`  | month name              | `hz`  | hour 12h (2 digits) |
+| `mx`  | month label (short)     | `ii`  | minutes (2 digits)  |
+| `ss`  | seconds (2 digits)      | `zz`  | meridiem (AM/PM)    |
 
 ### Human readable elapsed time
 
@@ -154,7 +154,13 @@ range.recalculate(new Date('2026-07-10')); // grows the range to include the dat
 ### Constants & enums
 
 ```typescript
-import { Miliseconds, Day, Month, MONTH_NAMES, DAY_NAMES } from '@rolster/dates';
+import {
+  Miliseconds,
+  Day,
+  Month,
+  MONTH_NAMES,
+  DAY_NAMES
+} from '@rolster/dates';
 
 Miliseconds.Day; // 86400000
 Month.December; // 11

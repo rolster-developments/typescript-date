@@ -42,8 +42,8 @@ export class Time {
         ? 12
         : this.hour - 12
       : this.hour === 0
-      ? 12
-      : this.hour;
+        ? 12
+        : this.hour;
 
     const hour = String(hourValue).padStart(2, '0');
     const minute = String(this.minute).padStart(2, '0');
@@ -62,8 +62,8 @@ export class Time {
         ? 12
         : this.hour - 12
       : this.hour === 0
-      ? 12
-      : this.hour;
+        ? 12
+        : this.hour;
 
     const hour = String(hourValue).padStart(2, '0');
     const minute = String(this.minute).padStart(2, '0');
