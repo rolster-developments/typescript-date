@@ -259,7 +259,9 @@ export function decreaseWeeksInDate(date: Date, week = 1): Date {
 }
 
 export function getDateWeight(date: Date): number {
-  return date.getFullYear() * 365 + (date.getMonth() + 1) * 30 + date.getDate();
+  return (
+    date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate()
+  );
 }
 
 export function dateIsEquals(date: Date, compare = new Date()): boolean {

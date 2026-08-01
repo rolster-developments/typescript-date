@@ -1,4 +1,4 @@
-import { dateFormatTemplate } from './lib';
+import { dateFormatTemplate, dateIsEqualsWeight, getDateWeight } from './lib';
 
 const date = new Date(2024, 4, 30, 10, 4, 24);
 
@@ -26,5 +26,22 @@ describe('formatDate', () => {
     expect(dateFormatTemplate(date, '{yy}-{mm}-{dd}T{hh}:{ii}:{ss}')).toBe(
       '2024-05-30T10:04:24'
     );
+  });
+});
+
+describe('getDateWeight', () => {
+  it('should not collide across the boundary of a 31-day month', () => {
+    const july31 = new Date(2026, 6, 31);
+    const august1 = new Date(2026, 7, 1);
+
+    expect(getDateWeight(july31)).not.toBe(getDateWeight(august1));
+    expect(dateIsEqualsWeight(july31, august1)).toBe(false);
+  });
+
+  it('should be equal only for the same calendar day', () => {
+    const today = new Date(2026, 7, 1, 9, 30, 0);
+    const sameDay = new Date(2026, 7, 1, 23, 59, 59);
+
+    expect(dateIsEqualsWeight(today, sameDay)).toBe(true);
   });
 });
