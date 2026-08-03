@@ -1,6 +1,6 @@
 {
   "name": "@rolster/dates",
-  "version": "4.1.4",
+  "version": "4.1.6",
   "type": "module",
   "description": "Utility package for manipulating Date compatible with Typescript projects.",
   "license": "MIT",

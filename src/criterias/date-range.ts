@@ -1,4 +1,5 @@
 import { Criteria, CriteriaCallback } from '@rolster/commons';
+import { normalizeMinTime } from '../lib';
 import { DateRange } from '../values/date-range';
 
 export class DateRangeCriteria extends Criteria<DateRange> {
@@ -24,6 +25,13 @@ export class DateRangeTimeCriteria extends DateRangeCriteria {
 }
 
 export class DateRangeISOCriteria extends DateRangeCriteria {
+  public assign(callback: CriteriaCallback): void {
+    callback(this.minKey, this.value.minISOFormat);
+    callback(this.maxKey, normalizeMinTime(this.value.maxDate).toISOString());
+  }
+}
+
+export class DateTimeRangeISOCriteria extends DateRangeCriteria {
   public assign(callback: CriteriaCallback): void {
     callback(this.minKey, this.value.minISOFormat);
     callback(this.maxKey, this.value.maxISOFormat);

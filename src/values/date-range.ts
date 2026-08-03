@@ -4,6 +4,7 @@ import {
   dateIsBetween,
   dateIsEquals,
   getTimeDifference,
+  normalizeMaxTime,
   normalizeMinTime
 } from '../lib';
 
@@ -17,8 +18,8 @@ export class DateRange {
 
     this.maxDate =
       maxDate && dateIsBefore(maxDate, minDate)
-        ? normalizeMinTime(maxDate)
-        : normalizeMinTime(minDate);
+        ? normalizeMaxTime(maxDate)
+        : normalizeMaxTime(minDate);
   }
 
   public get minISOFormat(): string {
